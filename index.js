@@ -12,11 +12,16 @@ app.use(cors());
 app.use(express.json());
 app.use('/api/todo', todosRoute);
 dotenv.config();
+mongoose
+	.connect(process.env.MONGO_URL, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true
+	})
+	.then(() => console.log('DB Connection Successfull!'))
+	.catch((err) => {
+		console.log(err);
+	});
 
-mongoose.connect(process.env.MONGO_URL, () => {
-	console.log('Connected to MongoDB');
-});
-
-app.listen(8000, () => {
+app.listen(process.env.PORT || 5000, () => {
 	console.log('Server is running...');
 });
